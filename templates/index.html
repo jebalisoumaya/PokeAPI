@@ -57,40 +57,82 @@
           resultDiv.innerHTML = `<p>${data.error}</p>`;
         }
       }
+
+      // Fonction pour récupérer les informations sur un type de Pokémon
+      async function fetchPokemonByType() {
+        const typeName = document.getElementById("type-input").value;
+        const response = await fetch(`/type/${typeName}`);
+        const data = await response.json();
+
+        const resultDiv = document.getElementById("result-type");
+        if (response.status === 200) {
+          resultDiv.innerHTML = `
+                <h3>Statistiques du type ${data.type}</h3>
+                <p><strong>Nombre de Pokémon:</strong> ${data.pokemon_count}</p>
+                <p><strong>Moyenne des HP:</strong> ${data.average_hp}</p>
+                <h4>Efficacité contre d'autres types:</h4>
+                <p><strong>Double dégâts contre:</strong> ${data.effectiveness.double_damage_to.join(
+                  ", "
+                )}</p>
+                <p><strong>Dégâts réduits contre:</strong> ${data.effectiveness.half_damage_to.join(
+                  ", "
+                )}</p>
+                <p><strong>Aucun dégât contre:</strong> ${data.effectiveness.no_damage_to.join(
+                  ", "
+                )}</p>
+            `;
+        } else {
+          resultDiv.innerHTML = `<p>${data.error}</p>`;
+        }
+      }
     </script>
   </head>
   <body>
     <h1>Welcome to PokéVerse!</h1>
 
-    <!-- Search pokemob by id or name-->
+    <!-- Search Pokémon by id or name -->
     <section>
-      <h2>Get Pokemon stats</h2>
+      <h2>Get Pokémon Stats</h2>
       <input
         type="text"
         id="pokemon-input"
-        placeholder="Enter name or ID of pokemon"
+        placeholder="Enter name or ID of Pokémon"
       />
-      <button onclick="fetchPokemonStats()">See statistiques</button>
+      <button onclick="fetchPokemonStats()">See Statistiques</button>
       <div id="result-single"></div>
     </section>
 
     <hr />
 
-    <!-- Comparing two pokemons -->
+    <!-- Comparing two Pokémon -->
     <section>
-      <h2>Compare two Pokémons</h2>
+      <h2>Compare Two Pokémon</h2>
       <input
         type="text"
         id="pokemon1-input"
-        placeholder="Enter the name or ID of the first pokemon"
+        placeholder="Enter the name or ID of the first Pokémon"
       />
       <input
         type="text"
         id="pokemon2-input"
-        placeholder="Enter the name or ID of the second pokemon"
+        placeholder="Enter the name or ID of the second Pokémon"
       />
       <button onclick="comparePokemons()">Compare</button>
       <div id="result-compare"></div>
+    </section>
+
+    <hr />
+
+    <!-- Search Pokémon by type -->
+    <section>
+      <h2>Get Pokémon Type Info</h2>
+      <input
+        type="text"
+        id="type-input"
+        placeholder="Enter type of Pokémon (e.g., fire, water)"
+      />
+      <button onclick="fetchPokemonByType()">See Type Info</button>
+      <div id="result-type"></div>
     </section>
   </body>
 </html>
