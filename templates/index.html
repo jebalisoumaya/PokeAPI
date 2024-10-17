@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon Stats</title>
+    <!-- Utilisation de url_for pour lier le fichier CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script>
+      // Fonction pour récupérer les statistiques du Pokémon
+      async function fetchPokemonStats() {
+        const pokemonName = document.getElementById("pokemon-input").value;
+        const response = await fetch(`/pokemon/${pokemonName}`);
+        const data = await response.json();
+
+        const resultDiv = document.getElementById("result-single");
+        if (response.status === 200) {
+          resultDiv.innerHTML = `
+                    <h3>Statistiques de ${data.name}</h3>
+                    <p><strong>HP:</strong> ${data.hp}</p>
+                    <p><strong>Attaque:</strong> ${data.attack}</p>
+                    <p><strong>Défense:</strong> ${data.defense}</p>
+                `;
+        } else {
+          resultDiv.innerHTML = `<p>${data.error}</p>`;
+        }
+      }
+
+      // Fonction pour comparer deux Pokémon
+      async function comparePokemons() {
+        const pokemon1 = document.getElementById("pokemon1-input").value;
+        const pokemon2 = document.getElementById("pokemon2-input").value;
+        const response = await fetch("/compare", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pokemon1: pokemon1,
+            pokemon2: pokemon2,
+          }),
+        });
+        const data = await response.json();
+
+        const resultDiv = document.getElementById("result-compare");
+        if (response.status === 200) {
+          resultDiv.innerHTML = `
+                    <h3>Comparaison des Pokémon</h3>
+                    <p><strong>${data.pokemon1.name}</strong> - HP: ${data.pokemon1.hp}, Attaque: ${data.pokemon1.attack}</p>
+                    <p><strong>${data.pokemon2.name}</strong> - HP: ${data.pokemon2.hp}, Attaque: ${data.pokemon2.attack}</p>
+                    <p><strong>Le plus fort:</strong> ${data.stronger}</p>
+                `;
+        } else {
+          resultDiv.innerHTML = `<p>${data.error}</p>`;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to PokéVerse!</h1>
+
+    <!-- Search pokemob by id or name-->
+    <section>
+      <h2>Rechercher un Pokémon</h2>
+      <input
+        type="text"
+        id="pokemon-input"
+        placeholder="Enter name or ID of pokemon"
+      />
+      <button onclick="fetchPokemonStats()">Voir les statistiques</button>
+      <div id="result-single"></div>
+    </section>
+
+    <hr />
+
+    <!-- Comparing two pokemons -->
+    <section>
+      <h2>Comparer deux Pokémon</h2>
+      <input
+        type="text"
+        id="pokemon1-input"
+        placeholder="Enter the name or ID of the first pokemon"
+      />
+      <input
+        type="text"
+        id="pokemon2-input"
+        placeholder="Enter the name or ID of the second pokemon"
+      />
+      <button onclick="comparePokemons()">Comparer</button>
+      <div id="result-compare"></div>
+    </section>
+  </body>
+</html>
