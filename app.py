@@ -21,7 +21,7 @@ def get_pokemon(name_or_id):
         }
         return jsonify(stats)
     else:
-        return jsonify({"error": "Pokémon non trouvé"}), 404
+        return jsonify({"error": "Pokémon not found"}), 404
 
 @app.route('/compare', methods=['POST'])
 def compare_pokemons():
