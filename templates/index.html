@@ -4,13 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokémon Stats</title>
-    <!-- Utilisation de url_for pour lier le fichier CSS -->
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
     <script>
-      // Fonction pour récupérer les statistiques du Pokémon
       async function fetchPokemonStats() {
         const pokemonName = document.getElementById("pokemon-input").value;
         const response = await fetch(`/pokemon/${pokemonName}`);
@@ -29,7 +28,6 @@
         }
       }
 
-      // Fonction pour comparer deux Pokémon
       async function comparePokemons() {
         const pokemon1 = document.getElementById("pokemon1-input").value;
         const pokemon2 = document.getElementById("pokemon2-input").value;
@@ -58,7 +56,6 @@
         }
       }
 
-      // Fonction pour récupérer les informations sur un type de Pokémon
       async function fetchPokemonByType() {
         const typeName = document.getElementById("type-input").value;
         const response = await fetch(`/type/${typeName}`);
@@ -86,7 +83,6 @@
         }
       }
 
-      // Fonction pour simuler un combat entre deux Pokémon
       async function simulateBattle() {
         const pokemon1 = document.getElementById("battle-pokemon1-input").value;
         const pokemon2 = document.getElementById("battle-pokemon2-input").value;
@@ -118,7 +114,6 @@
         `;
       }
 
-      // Fonction pour récupérer les statistiques du Pokémon pour le combat
       async function fetchPokemonStatsForBattle(pokemon) {
         const response = await fetch(`/pokemon/${pokemon}`);
         if (response.status === 200) {
@@ -128,75 +123,73 @@
             attack: data.attack,
           };
         }
-        return null; // Pokémon not found
+        return null;
       }
     </script>
   </head>
   <body>
     <h1>Welcome to PokéVerse!</h1>
 
-    <!-- Search Pokémon by id or name -->
-    <section>
-      <h2>Get Pokémon Stats</h2>
-      <input
-        type="text"
-        id="pokemon-input"
-        placeholder="Enter name or ID of Pokémon"
-      />
-      <button onclick="fetchPokemonStats()">See Statistiques</button>
-      <div id="result-single"></div>
-    </section>
+    <div class="container">
+      <section>
+        <h2>Get Pokémon Stats</h2>
+        <input
+          type="text"
+          id="pokemon-input"
+          placeholder="Enter name or ID of Pokémon"
+        />
+        <button onclick="fetchPokemonStats()">See Statistiques</button>
+        <div id="result-single"></div>
+      </section>
 
-    <hr />
+      <hr />
 
-    <!-- Comparing two Pokémon -->
-    <section>
-      <h2>Compare Two Pokémon</h2>
-      <input
-        type="text"
-        id="pokemon1-input"
-        placeholder="Enter the name or ID of the first Pokémon"
-      />
-      <input
-        type="text"
-        id="pokemon2-input"
-        placeholder="Enter the name or ID of the second Pokémon"
-      />
-      <button onclick="comparePokemons()">Compare</button>
-      <div id="result-compare"></div>
-    </section>
+      <section>
+        <h2>Compare Two Pokémon</h2>
+        <input
+          type="text"
+          id="pokemon1-input"
+          placeholder="Enter the name or ID of the first Pokémon"
+        />
+        <input
+          type="text"
+          id="pokemon2-input"
+          placeholder="Enter the name or ID of the second Pokémon"
+        />
+        <button onclick="comparePokemons()">Compare</button>
+        <div id="result-compare"></div>
+      </section>
 
-    <hr />
+      <hr />
 
-    <!-- Search Pokémon by type -->
-    <section>
-      <h2>Get Pokémon Type Info</h2>
-      <input
-        type="text"
-        id="type-input"
-        placeholder="Enter type of Pokémon (e.g., fire, water)"
-      />
-      <button onclick="fetchPokemonByType()">See Type Info</button>
-      <div id="result-type"></div>
-    </section>
+      <section>
+        <h2>Get Pokémon Type Info</h2>
+        <input
+          type="text"
+          id="type-input"
+          placeholder="Enter type of Pokémon (e.g., fire, water)"
+        />
+        <button onclick="fetchPokemonByType()">See Type Info</button>
+        <div id="result-type"></div>
+      </section>
 
-    <hr />
+      <hr />
 
-    <!-- Simulating a battle between two Pokémon -->
-    <section>
-      <h2>Simulate Pokémon Battle</h2>
-      <input
-        type="text"
-        id="battle-pokemon1-input"
-        placeholder="Enter the name or ID of the first Pokémon"
-      />
-      <input
-        type="text"
-        id="battle-pokemon2-input"
-        placeholder="Enter the name or ID of the second Pokémon"
-      />
-      <button onclick="simulateBattle()">Simulate Battle</button>
-      <div id="result-battle"></div>
-    </section>
+      <section>
+        <h2>Simulate Pokémon Battle</h2>
+        <input
+          type="text"
+          id="battle-pokemon1-input"
+          placeholder="Enter the name or ID of the first Pokémon"
+        />
+        <input
+          type="text"
+          id="battle-pokemon2-input"
+          placeholder="Enter the name or ID of the second Pokémon"
+        />
+        <button onclick="simulateBattle()">Simulate Battle</button>
+        <div id="result-battle"></div>
+      </section>
+    </div>
   </body>
 </html>
