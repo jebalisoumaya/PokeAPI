@@ -85,6 +85,51 @@
           resultDiv.innerHTML = `<p>${data.error}</p>`;
         }
       }
+
+      // Fonction pour simuler un combat entre deux Pokémon
+      async function simulateBattle() {
+        const pokemon1 = document.getElementById("battle-pokemon1-input").value;
+        const pokemon2 = document.getElementById("battle-pokemon2-input").value;
+
+        const stats1 = await fetchPokemonStatsForBattle(pokemon1);
+        const stats2 = await fetchPokemonStatsForBattle(pokemon2);
+
+        if (!stats1 || !stats2) {
+          const resultDiv = document.getElementById("result-battle");
+          resultDiv.innerHTML = `<p>Un ou les deux Pokémon n'ont pas été trouvés</p>`;
+          return;
+        }
+
+        let pokemon1Damage = 0;
+        let pokemon2Damage = 0;
+
+        for (let turn = 1; turn <= 5; turn++) {
+          pokemon1Damage += stats1.attack; // Pokémon 1 attacks
+          pokemon2Damage += stats2.attack; // Pokémon 2 attacks
+        }
+
+        const resultDiv = document.getElementById("result-battle");
+        const winner = pokemon1Damage > pokemon2Damage ? pokemon1 : pokemon2;
+        resultDiv.innerHTML = `
+          <h3>Résultat du combat</h3>
+          <p><strong>${pokemon1}</strong> a infligé ${pokemon1Damage} points de dégâts.</p>
+          <p><strong>${pokemon2}</strong> a infligé ${pokemon2Damage} points de dégâts.</p>
+          <p><strong>Le gagnant est:</strong> ${winner}</p>
+        `;
+      }
+
+      // Fonction pour récupérer les statistiques du Pokémon pour le combat
+      async function fetchPokemonStatsForBattle(pokemon) {
+        const response = await fetch(`/pokemon/${pokemon}`);
+        if (response.status === 200) {
+          const data = await response.json();
+          return {
+            name: data.name,
+            attack: data.attack,
+          };
+        }
+        return null; // Pokémon not found
+      }
     </script>
   </head>
   <body>
@@ -133,6 +178,25 @@
       />
       <button onclick="fetchPokemonByType()">See Type Info</button>
       <div id="result-type"></div>
+    </section>
+
+    <hr />
+
+    <!-- Simulating a battle between two Pokémon -->
+    <section>
+      <h2>Simulate Pokémon Battle</h2>
+      <input
+        type="text"
+        id="battle-pokemon1-input"
+        placeholder="Enter the name or ID of the first Pokémon"
+      />
+      <input
+        type="text"
+        id="battle-pokemon2-input"
+        placeholder="Enter the name or ID of the second Pokémon"
+      />
+      <button onclick="simulateBattle()">Simulate Battle</button>
+      <div id="result-battle"></div>
     </section>
   </body>
 </html>
